@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
+import { runCode } from './api/api';
 
 export function CodeMirrorComponent(props) {
 
     const [code, setCode] = useState('');
-    const [mode, setMode] = useState('jsx');
-
+    const [language, setLanguage] = useState('python');
+    
     const handleSubmit = () => {
-        console.log(code)
+        runCode(code, language)
     }
 
-    const handleModeChange = ({target}) => {
-        setMode(target.value)
+    const handleLanguageChange = ({target}) => {
+        setLanguage(target.value)
     }
 
     return(
@@ -23,18 +24,19 @@ export function CodeMirrorComponent(props) {
                 options={{
                     theme: 'monokai',
                     keyMap: 'sublime',
-                    mode: mode
+                    mode: language
                 }}
                 onChange={(editor, data, value) => {
                     setCode(editor.getValue())
                 }}
             />
-            <select onChange={handleModeChange} value={mode}>
+            <select onChange={handleLanguageChange} value={language}>
                 <option value="python">Python</option>
                 <option value="jsx">JSX</option>
                 <option value="java">Java</option>
                 <option value="c">C</option>
                 <option value="go">Go</option>
+                <option value="cpp">C++</option>
             </select>
             <button onClick={handleSubmit}>Submit</button>
         </div>
