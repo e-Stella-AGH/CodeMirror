@@ -18,7 +18,7 @@ export function CodeMirrorComponent(props) {
     }
 
     return(
-        <div style={{width: "80%", height: "300px", marginLeft:"auto", marginRight:"auto", marginTop: "30px"}}>
+        <div style={{width: "80%", height: "300px", marginLeft:"auto", marginRight:"auto", marginTop: "20px"}}>
             <CodeMirror
                 value={code}
                 options={{
