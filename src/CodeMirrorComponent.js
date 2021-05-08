@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
-import { runCode } from './api/api';
+import { runCode, getNumberOfTests } from './api/api';
+import { TestsList } from './TestList';
+import { tests } from './dummy';
 
 export function CodeMirrorComponent(props) {
 
     const [code, setCode] = useState('');
     const [language, setLanguage] = useState('python');
+    const [testsQuantity, setTestsQuantity] = useState(0)
+
+    useEffect(() => {
+        getNumberOfTests(1)
+            .then(data => setTestsQuantity(data.result))
+    }, [])
     
     const handleSubmit = () => {
-        runCode(code, language)
+        runCode(code, language, testsQuantity)
     }
 
     const handleLanguageChange = ({target}) => {
@@ -18,7 +26,7 @@ export function CodeMirrorComponent(props) {
     }
 
     return(
-        <div style={{width: "80%", height: "300px", marginLeft:"auto", marginRight:"auto", marginTop: "30px"}}>
+        <div style={{width: "80%", height: "300px", marginLeft:"auto", marginRight:"auto", marginTop: "20px"}}>
             <CodeMirror
                 value={code}
                 options={{
@@ -39,6 +47,9 @@ export function CodeMirrorComponent(props) {
                 <option value="cpp">C++</option>
             </select>
             <button onClick={handleSubmit}>Submit</button>
+            <TestsList 
+                tests={tests}
+            />
         </div>
     )
 }
